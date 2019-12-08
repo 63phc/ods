@@ -15,3 +15,8 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 RUN mkdir -p /app/log/gunicorn
+
+COPY ./docker/entrypoint.sh /
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
