@@ -1,0 +1,7 @@
+
+<form action="#" method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+
+  <button type="submit" class="btn btn-primary">Отравить заявку</button>
+</form>

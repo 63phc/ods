@@ -1,0 +1,40 @@
+version: "3.0"
+
+services:
+
+  django:
+    image: 63phc/ods
+#    image:
+
+#    command: bash -c "
+#      gunicorn src.wsgi:application -b 0.0.0.0:8080"
+    volumes:
+        - .:/app/static
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    entrypoint: ./entrypoint.sh
+
+  postgres:
+    image: postgres:11.5-alpine
+    environment:
+      - POSTGRES_NAME=ods_test
+      - POSTGRES_USER=ods_test
+      - POSTGRES_DB=ods_test
+      - POSTGRES_PASSWORD=ods_test
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx:1.17.6-alpine
+    depends_on:
+      - django
+    volumes:
+      - ../static:/static
+      - ./ngixn.conf.nginx:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:8080"
